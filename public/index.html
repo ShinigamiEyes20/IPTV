@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>TV Player</title>
+<title>IPTV Player</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -213,7 +213,7 @@ header{
 
 <div class="app">
   <header>
-    <div class="logo">JET<em>TV</em></div>
+    <div class="logo">IPT<em>V</em></div>
     <div class="header-right">
       <div class="live-badge"><div class="live-dot"></div> Live</div>
       <div class="ch-count" id="chCount">Loading...</div>
@@ -222,7 +222,7 @@ header{
 
   <div class="sidebar">
     <div class="search-wrap">
-      <input class="search" id="search" type="text" placeholder="Search channels..." oninput="filterChannels()"/>
+      <input class="search" id="search" type="text" placeholder="Search channels..." oninput="debounceSearch()"/>
     </div>
     <div class="channel-list" id="channelList"></div>
   </div>
@@ -318,11 +318,18 @@ function renderList() {
   list.innerHTML = html;
 }
 
+let searchTimer = null;
+function debounceSearch() {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(filterChannels, 300);
+}
+
 function filterChannels() {
-  const q = document.getElementById('search').value.toLowerCase();
+  const q = document.getElementById('search').value.toLowerCase().trim();
   filtered = q ? allChannels.filter(c =>
     c.name.toLowerCase().includes(q) || c.group.toLowerCase().includes(q)
   ) : [...allChannels];
+  activeIdx = -1;
   renderList();
 }
 
