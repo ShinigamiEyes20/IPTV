@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "functions": {
+    "api/stream.js": {
+      "memory": 128,
+      "maxDuration": 10
+    }
+  },
+  "routes": [
+    { "src": "/api/stream", "dest": "/api/stream.js" },
+    { "src": "/(.*)", "dest": "/public/$1" }
+  ]
+}
